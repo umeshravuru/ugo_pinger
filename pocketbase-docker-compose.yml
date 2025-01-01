@@ -4,11 +4,6 @@ services:
     image: ghcr.io/muchobien/pocketbase:latest
     container_name: pocketbase
     restart: unless-stopped
-    command:
-      - --encryptionEnv
-      - ENCRYPTION
-    environment:
-      ENCRYPTION: YOUR_ENCRYPTION_KEY
     ports:
       - "8091:8090"
     volumes:
