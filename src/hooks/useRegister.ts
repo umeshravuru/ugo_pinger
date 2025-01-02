@@ -4,6 +4,7 @@ import { pb } from '../lib/pocketbase';
 import type { RegisterData, RegisterError } from '../types/auth';
 import { validateRegistration } from '../utils/validation';
 import { ClientResponseError } from 'pocketbase';
+import toast from 'react-hot-toast';
 
 export function useRegister() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +30,12 @@ export function useRegister() {
         ...data,
         emailVisibility: true,
       });
+
+      // Show success message and redirect
+      toast.success(
+          'Account created! Please check your email (including spam folder) from ugoconsulting@zohomail.com to verify your account.',
+          { duration: 6000 }
+      );
 
       // Redirect to login after successful registration
       navigate('/login');
