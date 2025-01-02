@@ -31,6 +31,8 @@ export function useRegister() {
         emailVisibility: true,
       });
 
+      await pb.collection('users').requestVerification(data.email);
+
       // Show success message and redirect
       toast.success(
           'Account created! Please check your email (including spam folder) from ugoconsulting@zohomail.com to verify your account.',
