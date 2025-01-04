@@ -1,6 +1,7 @@
 import React from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import type { Check } from '../../types/check';
+import { AlertCircle, Loader2, Copy, Check } from 'lucide-react';
+import { copyToClipboard } from '../../utils/clipboard';
+import toast from 'react-hot-toast';
 
 interface ChecksListProps {
     checks: Check[];
@@ -9,6 +10,16 @@ interface ChecksListProps {
 }
 
 export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
+    const handleCopyId = async (id: string) => {
+        const curlString = "curl --location --request PATCH 'http://ugotechconsulting.com:8091/api/collections/checks/records/" + id + "' --data \"{\\\"last_ping_time\\\": \\\"$(date -u +'%Y-%m-%d %H:%M:%S.%3NZ')\\\"}\"";
+        const success = await copyToClipboard(curlString);
+        if (success) {
+            toast.success('curl copied to clipboard');
+        } else {
+            toast.error('Failed to copy curl');
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-8">
@@ -45,6 +56,7 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notifications Sent</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Copy Ping Curl</th>
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -74,6 +86,15 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                             <div className="text-sm text-gray-900">
                                 {new Date(check.updated).toLocaleString()}
                             </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                            <button
+                                onClick={() => handleCopyId(check.id)}
+                                className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full hover:bg-indigo-50 transition-colors"
+                                title="Copy ID"
+                            >
+                                <Copy className="w-5 h-5" />
+                            </button>
                         </td>
                     </tr>
                 ))}
