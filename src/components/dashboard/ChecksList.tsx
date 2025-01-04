@@ -10,7 +10,7 @@ interface ChecksListProps {
 
 export function ChecksList({checks, isLoading, error}: ChecksListProps) {
     const showCurl = async (id: string) => {
-        const curlString = "curl --location --request PATCH 'http://ugotechconsulting.com:8091/api/collections/checks/records/" + id + "' --header 'Content-Type: application/json' --data \"{\\\"last_ping_time\\\": \\\"$(date -u +'%Y-%m-%d %H:%M:%S.%3NZ')\\\"}\"";
+        const curlString = "curl --location --request PATCH 'http://ugotechconsulting.com:8091/api/collections/checks/records/" + id + "' --header 'Content-Type: application/json' --data \"{\\\"last_ping_time\\\": \\\"$(date -u +'%Y-%m-%d %H:%M:%S')\\\"}\"";
         toast(curlString, {
                 duration: 6000,
                 style: {
