@@ -1,6 +1,5 @@
 import React from 'react';
-import { AlertCircle, Loader2, Copy, Check } from 'lucide-react';
-import { copyToClipboard } from '../../utils/clipboard';
+import {AlertCircle, Loader2, Copy, Check} from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface ChecksListProps {
@@ -9,21 +8,21 @@ interface ChecksListProps {
     error: string | null;
 }
 
-export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
-    const handleCopyId = async (id: string) => {
+export function ChecksList({checks, isLoading, error}: ChecksListProps) {
+    const showCurl = async (id: string) => {
         const curlString = "curl --location --request PATCH 'http://ugotechconsulting.com:8091/api/collections/checks/records/" + id + "' --data \"{\\\"last_ping_time\\\": \\\"$(date -u +'%Y-%m-%d %H:%M:%S.%3NZ')\\\"}\"";
-        const success = await copyToClipboard(curlString);
-        if (success) {
-            toast.success('curl copied to clipboard');
-        } else {
-            toast.error('Failed to copy curl');
-        }
+        toast(curlString, {
+                duration: 6000,
+                style: {
+                    maxWidth: '3000px',
+                }
+            });
     };
 
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+                <Loader2 className="w-8 h-8 text-indigo-600 animate-spin"/>
             </div>
         );
     }
@@ -31,7 +30,7 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
     if (error) {
         return (
             <div className="flex items-center justify-center py-8 text-red-600">
-                <AlertCircle className="w-5 h-5 mr-2" />
+                <AlertCircle className="w-5 h-5 mr-2"/>
                 {error}
             </div>
         );
@@ -50,13 +49,23 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                 <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Site Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Ping</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cron Time (sec)</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notifications Sent</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Site
+                        Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last
+                        Ping
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cron
+                        Time (sec)
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notifications
+                        Sent
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Copy Ping Curl</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Show
+                        Ping Curl
+                    </th>
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -75,7 +84,8 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                             <div className="text-sm text-gray-900">{check.cron_time}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{check.sent_notification_count}/{check.max_notifications}</div>
+                            <div
+                                className="text-sm text-gray-900">{check.sent_notification_count}/{check.max_notifications}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
@@ -89,11 +99,11 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                             <button
-                                onClick={() => handleCopyId(check.id)}
+                                onClick={() => showCurl(check.id)}
                                 className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full hover:bg-indigo-50 transition-colors"
                                 title="Copy ID"
                             >
-                                <Copy className="w-5 h-5" />
+                                <Copy className="w-5 h-5"/>
                             </button>
                         </td>
                     </tr>
