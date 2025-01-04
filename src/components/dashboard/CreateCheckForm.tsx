@@ -14,6 +14,7 @@ export function CreateCheckForm({ onSuccess, onCancel }: CreateCheckFormProps) {
     const [formData, setFormData] = useState({
         site_name: '',
         cron_time: '',
+        max_notifications: '',
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -28,9 +29,16 @@ export function CreateCheckForm({ onSuccess, onCancel }: CreateCheckFormProps) {
                 return;
             }
 
+            const maxNotifications = parseInt(formData.max_notifications);
+            if (isNaN(maxNotifications) || maxNotifications <= 0 || maxNotifications > 5) {
+                setErrors({ max_notifications: 'Must be between 1 and 5' });
+                return;
+            }
+
             await pb.collection('checks').create({
                 site_name: formData.site_name,
                 cron_time: cronTime,
+                max_notifications: maxNotifications,
                 user_id: pb.authStore.model?.id,
             });
 
@@ -68,6 +76,18 @@ export function CreateCheckForm({ onSuccess, onCancel }: CreateCheckFormProps) {
                 value={formData.cron_time}
                 onChange={handleChange}
                 error={errors.cron_time}
+                required
+            />
+
+            <Input
+                label="Max Notifications"
+                name="max_notifications"
+                type="number"
+                min="1"
+                max="5"
+                value={formData.max_notifications}
+                onChange={handleChange}
+                error={errors.max_notifications}
                 required
             />
 

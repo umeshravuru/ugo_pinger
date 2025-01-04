@@ -42,6 +42,7 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Site Name</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Ping</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cron Time (sec)</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notifications Sent</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
                 </tr>
@@ -60,6 +61,9 @@ export function ChecksList({ checks, isLoading, error }: ChecksListProps) {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">{check.cron_time}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">{check.sent_notification_count}/{check.max_notifications}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
