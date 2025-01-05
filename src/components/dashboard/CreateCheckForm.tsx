@@ -40,6 +40,7 @@ export function CreateCheckForm({ onSuccess, onCancel }: CreateCheckFormProps) {
                 cron_time: cronTime,
                 max_notifications: maxNotifications,
                 user_id: pb.authStore.model?.id,
+                last_ping_time: new Date(0),
             });
 
             onSuccess();
